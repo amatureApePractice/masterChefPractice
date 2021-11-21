@@ -106,4 +106,20 @@ contract MasterChef is Ownable {
     function poolLength() external view returns (uint256) {
       return poolInfo.length;
     }
+
+    //Add a new lp to the pool. Can only be called by the owner.
+    // XXX DO NOT add the same LP token more than once. Rewards will be messed up if you do.
+    function add(uint256 _allocPOint, IERC20 _lpToken, bool _withdrawUpdate) public onlyOwner {
+      if (_withUpdate) {
+        massUpdatePools();
+      }
+      uint256 lastRewardBlock = block.number > startBlock ? block.number : startBlock;
+      totalAllocPoint = totalAllocPoint.add(_allocPoint);
+      poolInfo.push(poolInfo({
+        lpToken: _lpToken,
+        allocPoint: _allocPoint,
+        lastRewardBlock: lastRewardBlock,
+        accSushiPerShare: 0
+      }));
+    }
 ;}
